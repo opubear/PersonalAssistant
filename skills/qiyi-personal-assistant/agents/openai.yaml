@@ -1,0 +1,13 @@
+interface:
+  display_name: 'Qiyi Personal Assistant'
+  short_description: 'Use personal context and submit preferences or tasks'
+
+dependencies:
+  tools:
+    - type: 'mcp'
+      value: 'qiyi-personal-assistant'
+      description: 'Qiyi backend MCP; use the server configured in Codex'
+      transport: 'streamable_http'
+
+policy:
+  allow_implicit_invocation: true

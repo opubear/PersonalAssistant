@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+  <key>Label</key><string>com.qiyi.agent</string>
+  <key>ProgramArguments</key><array>
+    <string>/ABSOLUTE/PATH/TO/node</string>
+    <string>/ABSOLUTE/PATH/TO/personal-assistant/dist/daemon/main.js</string>
+  </array>
+  <key>WorkingDirectory</key><string>/ABSOLUTE/PATH/TO/personal-assistant</string>
+  <key>RunAtLoad</key><true/>
+  <key>KeepAlive</key><true/>
+  <key>ThrottleInterval</key><integer>30</integer>
+  <key>StandardOutPath</key><string>/ABSOLUTE/PATH/TO/personal-assistant/data/agent.log</string>
+  <key>StandardErrorPath</key><string>/ABSOLUTE/PATH/TO/personal-assistant/data/agent-error.log</string>
+</dict></plist>

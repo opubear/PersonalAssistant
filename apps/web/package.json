@@ -1,0 +1,1 @@
+{"name":"@qiyi/web","version":"0.1.0","private":true,"type":"module","dependencies":{"@qiyi/contracts":"*","@qiyi/client":"*","@qiyi/adapters":"*"}}

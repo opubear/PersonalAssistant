@@ -1,0 +1,7 @@
+{
+  "deviceId": "my-computer",
+  "pollIntervalMs": 30000,
+  "outputDirectory": "./data/outputs",
+  "collectors": [],
+  "commands": []
+}

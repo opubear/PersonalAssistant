@@ -1,0 +1,18 @@
+{
+  "deviceId": "my-laptop",
+  "pollIntervalMs": 30000,
+  "outputDirectory": "./data/outputs",
+  "collectors": [
+    {
+      "sourceId": "my-codex",
+      "format": "codex",
+      "path": "~/.codex/sessions"
+    },
+    {
+      "sourceId": "my-app-events",
+      "format": "app-jsonl",
+      "path": "./data/app-events"
+    }
+  ],
+  "commands": []
+}

@@ -1,0 +1,6 @@
+dist
+node_modules
+.awtcontext
+.local
+data
+package-lock.json

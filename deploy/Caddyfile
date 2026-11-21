@@ -1,0 +1,13 @@
+# Replace this domain and set MCP_URL=https://<same-domain>/mcp on the backend.
+# Caddy and qiyi-server run on the same host; port 4310 stays on loopback.
+assistant.example.com {
+	handle /mcp {
+		# Preserve the original Host and Authorization headers (Caddy defaults).
+		reverse_proxy 127.0.0.1:4310
+	}
+
+	# The privileged RPC API is not exposed by this MCP virtual host.
+	handle {
+		respond "Not found" 404
+	}
+}

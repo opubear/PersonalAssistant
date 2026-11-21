@@ -1,0 +1,2 @@
+{"id":"sample-event-001","app":"Reader","activity":"阅读技术文章","durationSeconds":1800,"timestamp":"2026-11-12T21:00:00+08:00"}
+{"id":"sample-event-002","app":"Notes","activity":"整理每周计划","durationSeconds":900,"timestamp":"2026-11-12T21:30:00+08:00"}

@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+!.env.mcp.example
+data/
+.local/
+coverage/
+*.log
+.DS_Store
+Qiyi.app/
+apps/capture/.build/
+apps/capture/.swiftpm/
+__pycache__/

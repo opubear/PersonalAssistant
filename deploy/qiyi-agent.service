@@ -1,0 +1,16 @@
+[Unit]
+Description=Qiyi local adapter daemon
+After=network-online.target
+
+[Service]
+Type=simple
+# User service: replace this directory and the Node executable for your machine.
+WorkingDirectory=%h/personal-assistant
+Environment=ENV_FILE=%h/personal-assistant/.env
+ExecStart=/usr/bin/node %h/personal-assistant/dist/daemon/main.js
+Restart=on-failure
+RestartSec=10
+UMask=0077
+
+[Install]
+WantedBy=default.target

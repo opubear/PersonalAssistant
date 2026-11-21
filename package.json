@@ -1,0 +1,55 @@
+{
+  "name": "qiyi-personal-assistant",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.0.0 <25 || >=26"
+  },
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "setup": "node scripts/setup.mjs",
+    "dev": "node scripts/dev.mjs",
+    "dev:server": "tsx watch --conditions=qiyi-source apps/server/src/main.ts",
+    "dev:bridge": "tsx watch --conditions=qiyi-source apps/bridge/src/main.ts",
+    "dev:web": "vite --config apps/web/vite.config.ts",
+    "daemon": "tsx --conditions=qiyi-source apps/daemon/src/main.ts",
+    "build:packages": "node scripts/build-packages.mjs",
+    "build": "node scripts/build.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --conditions=qiyi-source --test tests/*.test.ts",
+    "check:packages": "node scripts/check-packages.mjs",
+    "check": "npm run typecheck && npm test && npm run build && npm run check:packages",
+    "start:server": "node dist/server/main.js",
+    "start:bridge": "node dist/bridge/main.js",
+    "start:daemon": "node dist/daemon/main.js",
+    "gateway": "node dist/server/gateway.js",
+    "setup:mcp": "node scripts/setup-mcp.mjs",
+    "codex:config": "node dist/server/configure-codex.js",
+    "install:skill": "node scripts/install-skill.mjs"
+  },
+  "dependencies": {
+    "@fastify/static": "^10.1.10",
+    "@modelcontextprotocol/server": "^2.4.0",
+    "dotenv": "^17.2.3",
+    "fastify": "^5.12.8",
+    "lucide-react": "^0.468.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/client": "^2.4.0",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "esbuild": "^0.28.2",
+    "prettier": "^3.10.1",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.8"
+  }
+}

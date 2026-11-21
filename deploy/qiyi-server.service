@@ -1,0 +1,23 @@
+[Unit]
+Description=Qiyi personal memory API and MCP
+After=network.target
+
+[Service]
+Type=simple
+User=qiyi
+Group=qiyi
+WorkingDirectory=/opt/qiyi
+Environment=ENV_FILE=/opt/qiyi/.env
+Environment=MCP_ENV_FILE=/opt/qiyi/.env.mcp
+ExecStart=/usr/bin/node /opt/qiyi/dist/server/main.js
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/qiyi/data
+
+[Install]
+WantedBy=multi-user.target
