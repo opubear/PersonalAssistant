@@ -46,10 +46,15 @@ public final class ProcessAgentSession: ConversationAgentSession {
                 try await connection.send(["jsonrpc": "2.0", "method": "initialized"])
                 let response = try await connection.rpc("thread/start", [
                     "cwd": directory.path, "approvalPolicy": "on-request", "approvalsReviewer": "user",
-                    "sandbox": "read-only",
+                    "sandbox": "read-only", "ephemeral": true,
                 ])
-                sessionID = (response["thread"] as? [String: Any])?["id"] as? String
-                guard sessionID != nil else { throw AgentError("Codex 没有返回会话 ID。") }
+                guard let thread = response["thread"] as? [String: Any], let id = thread["id"] as? String else {
+                    throw AgentError("Codex 没有返回会话 ID。")
+                }
+                guard thread["ephemeral"] as? Bool == true else {
+                    throw AgentError("Codex 未确认使用临时会话。请更新 Codex 后重试。")
+                }
+                sessionID = id
             case .dsh:
                 let response = try await connection.rpc("initialize", [
                     "protocolVersion": 1, "clientCapabilities": [:] as [String: String],

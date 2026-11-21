@@ -12,6 +12,7 @@ private final class MockTransport: AgentTransport {
     var handler: (([String: Any]) -> Void)?
     var supportsImages = true
     var failTurn = false
+    var codexThread: [String: Any] = ["id": "thread-1", "ephemeral": true]
 
     func start(configuration: AgentConfiguration, directory: URL) throws { starts += 1 }
     func close() { closed = true }
@@ -24,7 +25,7 @@ private final class MockTransport: AgentTransport {
         switch method {
         case "initialize": reply(["agentCapabilities": ["promptCapabilities": ["image": supportsImages]]])
         case "initialized": break
-        case "thread/start": reply(["thread": ["id": "thread-1"]])
+        case "thread/start": reply(["thread": codexThread])
         case "session/new": reply(["sessionId": "session-1"])
         case "get_state": onRecord?(["id": id, "type": "response", "success": true])
         case "prompt":
@@ -90,6 +91,17 @@ struct AgentSessionTests {
         #expect(transport.starts == 0)
     }
 
+    @Test(arguments: [false, nil] as [Bool?])
+    func codexRequiresAnEphemeralThreadBeforeSendingContent(ephemeral: Bool?) async {
+        let transport = MockTransport()
+        transport.codexThread["ephemeral"] = ephemeral
+        let session = ProcessAgentSession(configuration: .init(), directory: FileManager.default.temporaryDirectory, transport: transport)
+        await #expect(throws: AgentError.self) { try await session.start() }
+        await #expect(throws: AgentError.self) { try await session.respond(to: .init(text: "资料概述")) }
+        #expect(transport.closed)
+        #expect(!transport.sent.contains { $0["method"] as? String == "turn/start" })
+    }
+
     @Test(arguments: AgentProvider.allCases)
     func sendsImagesAndReusesSessionWithBasePromptOnlyOnce(provider: AgentProvider) async throws {
         let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
@@ -113,7 +125,11 @@ struct AgentSessionTests {
         #expect(encoded[0].contains("基础提示词"))
         #expect(!encoded[1].contains("基础提示词"))
         if provider == .codex {
-            #expect(transport.sent.filter { $0["method"] as? String == "thread/start" }.count == 1)
+            let starts = transport.sent.filter { $0["method"] as? String == "thread/start" }
+            #expect(starts.count == 1)
+            let threadParams = try #require(starts.first?["params"] as? [String: Any])
+            #expect(threadParams["ephemeral"] as? Bool == true)
+            #expect(messages.allSatisfy { ($0["params"] as? [String: Any])?["threadId"] as? String == "thread-1" })
             let params = try #require(messages[0]["params"] as? [String: Any])
             let input = try #require(params["input"] as? [[String: Any]])
             #expect(input[1]["type"] as? String == "localImage")
